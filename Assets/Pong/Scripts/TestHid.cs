@@ -14,8 +14,8 @@ public class TestHid : MonoBehaviour
     void Update()
     {
         // Debug.Log(Input.GetAxisRaw("Horizontal"));
-        Debug.Log(Input.GetAxis("Vertical1")+ " " + Input.GetAxis("Vertical2")) ;
-       // Debug.Log(Input.GetAxisRaw("Vertical1") + " " + Input.GetAxisRaw("Vertical2"));
-        //Debug.Log(Input.GetAxisRaw("P1_button1") + " " + Input.GetAxisRaw("P2_button1"));
+        // Debug.Log(Input.GetAxis("Vertical1")+ " " + Input.GetAxis("Vertical2")) ;
+        // Debug.Log(Input.GetAxisRaw("Vertical1") + " " + Input.GetAxisRaw("Vertical2"));
+        Debug.Log(Input.GetAxisRaw("P1_button1") + " " + Input.GetAxisRaw("P2_button1"));
     }
 }
