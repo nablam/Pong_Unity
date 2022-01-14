@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wall
+  - Ball
+  - P1wall
+  - P2wall
   layers:
   - Default
   - TransparentFX

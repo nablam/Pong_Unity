@@ -1,0 +1,46 @@
+{
+    "name": "playersInputs",
+    "maps": [
+        {
+            "name": "Players",
+            "id": "0f380aaa-cb83-47bf-867a-1056f488cefb",
+            "actions": [
+                {
+                    "name": "P1_Move",
+                    "type": "Value",
+                    "id": "e41be2b0-e018-45cb-a590-5001a965a891",
+                    "expectedControlType": "Axis",
+                    "processors": "Normalize(min=-1,max=1)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0ef53605-af13-4bd8-9637-074bee54fd78",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/stick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ardinoleo",
+                    "action": "P1_Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "ardinoleo",
+            "bindingGroup": "ardinoleo",
+            "devices": [
+                {
+                    "devicePath": "<HID::Arduino LLC Arduino Leonardo>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
