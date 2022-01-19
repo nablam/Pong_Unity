@@ -1,36 +1,5 @@
 ﻿#include <math.h>
-#include "Joystick.h"
-
-// Create Joystick
-Joystick_ Joystick;
-
-const bool initAutostate = true; //true sends auto, false needs polling with .sendSate()
-int _xAxis = 0; //xAxis is RESERVED!!
-int _yAxis = 0;
-
-const int Button1_pin = 8;
-const int Button2_pin = 9;
-const int Button3_pin = 10;
-const int Button4_pin = 11;
-
-const int Mode_Pin = 12;
-const int LED_PIN = 13;
-
-
-int lastButtonStates[4] = { 0,0,0,0 };
-const int pinToButtonMap = 8;
-
-float Pad1_PotValue;
-int Pad1_potCleanVal;
-float Pad2_PotValue;
-int Pad2_potCleanVal;
-const int ledPin = 13;
-
-int MODE_ledState = LOW;     // the current state of LED
-int MODE_lastButtonState;    // the previous state of button
-int MODE_currentButtonState;
-
-int _min; //0 for unity and -127 for raspi
+//
 
 //*******************************************************************************************************************
 //                HID iD               num of buttons up 50, num hatswitches up to 2 max, X, Y, Z, rotX, rotY, rotZ, rudder, throttle, accelerometr, break  steering)
@@ -60,6 +29,14 @@ void ReadAnSetButtons() {
             lastButtonStates[index] = currentButtonState;
         }
     }
+
+    //for (int index = 0; index < 4; index++)
+    //{
+    //    if (lastButtonStates[index] == 1) { Joystick.pressButton(index); }
+    //    else {
+    //        Joystick.releaseButton(index);
+    //    }
+    //}
 }
 
 void ReadModeButton() {
@@ -79,7 +56,7 @@ void ReadModeButton() {
 
 void Do_setup() {
     // put your setup code here, to run once:
-     // Serial.begin(9600 );
+
     pinMode(Button1_pin, INPUT_PULLUP);
     pinMode(Button2_pin, INPUT_PULLUP);
     pinMode(Button3_pin, INPUT_PULLUP);
@@ -111,6 +88,6 @@ void Do_loop() {
     //Joystick[1].setXAxis(Pad2_potCleanVal);
     //************************************************************
 
-    Serial.println(Pad1_potCleanVal);
+
     delay(20);
 }
