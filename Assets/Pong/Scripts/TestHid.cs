@@ -11,6 +11,7 @@ public class TestHid : MonoBehaviour
     public GameObject Oj1;
     public GameObject Oj2;
     public GameObject Ojbutt;
+    public GameObject DebugObj;
     public GameObject Pad1;
     public GameObject Pad2;
 
@@ -23,6 +24,7 @@ public class TestHid : MonoBehaviour
     TextMeshPro J1;
     TextMeshPro J2;
     TextMeshPro butttons;
+    TextMeshPro DebugBox;
     string tmp = "";
     float P1val;
     float P2val;
@@ -33,11 +35,13 @@ public class TestHid : MonoBehaviour
     bool DisEnabWalls = true;
     int laststate=1;
     int curstate;
+   // int avgFrameRate;
     void Start()
     {
         J1 = Oj1.GetComponent<TextMeshPro>();
         J2 = Oj2.GetComponent<TextMeshPro>();
         butttons = Ojbutt.GetComponent<TextMeshPro>();
+        DebugBox= DebugObj.GetComponent<TextMeshPro>();
     }
 
     public void increaseP1() { P1Score++; }
@@ -87,9 +91,14 @@ public class TestHid : MonoBehaviour
             laststate = 1;
         }
         butttons.text = tmp;
-       
 
 
+        string DebugString = Input.GetAxisRaw("P1_button1").ToString() + " " + Input.GetAxisRaw("P1_button2").ToString() + " " + Input.GetAxisRaw("P2_button1").ToString() + " " + Input.GetAxisRaw("P2_button2").ToString();
+        DebugBox.text = DebugString;
+        //float current = 0;
+        //current = Time.frameCount / Time.time;
+        //avgFrameRate = (int)current;
+        //J2.text = avgFrameRate.ToString() + " FPS";
     }
 
     float timeRunning = 0.0f;
