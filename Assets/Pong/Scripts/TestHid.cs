@@ -12,6 +12,7 @@ public class TestHid : MonoBehaviour
     public GameObject Oj2;
     public GameObject Ojbutt;
     public GameObject DebugObj;
+    public GameObject DebugObjList;
     public GameObject Pad1;
     public GameObject Pad2;
 
@@ -25,6 +26,7 @@ public class TestHid : MonoBehaviour
     TextMeshPro J2;
     TextMeshPro butttons;
     TextMeshPro DebugBox;
+    TextMeshPro DebugBoxList;
     string tmp = "";
     float P1val;
     float P2val;
@@ -35,6 +37,7 @@ public class TestHid : MonoBehaviour
     bool DisEnabWalls = true;
     int laststate=1;
     int curstate;
+    int temp=-1;
    // int avgFrameRate;
     void Start()
     {
@@ -42,6 +45,7 @@ public class TestHid : MonoBehaviour
         J2 = Oj2.GetComponent<TextMeshPro>();
         butttons = Ojbutt.GetComponent<TextMeshPro>();
         DebugBox= DebugObj.GetComponent<TextMeshPro>();
+        DebugBoxList= DebugObjList.GetComponent<TextMeshPro>();
     }
 
     public void increaseP1() { P1Score++; }
@@ -65,23 +69,27 @@ public class TestHid : MonoBehaviour
         // Debug.Log(Input.GetAxis("Vertical1")+ " " + Input.GetAxis("Vertical2")) ;
         // Debug.Log(Input.GetAxisRaw("Vertical1") + " " + Input.GetAxisRaw("Vertical2"));
 
-        //Debug.Log(Input.GetAxisRaw("P1_button1") + " " + Input.GetAxisRaw("P2_button1"));
-        P1val =  Mathf.Round(Input.GetAxis("Vertical1") * 100f) / 100f;
-        P2val = Mathf.Round(Input.GetAxis("Vertical2") * 100f) / 100f;
+        //Debug.Log(Input.GetAxisRaw("B_0") + " " + Input.GetAxisRaw("B_2"));
+
+        P1val = Input.GetAxis("Vertical1");
+        P2val = Input.GetAxis("Vertical2");
         J1.text = P1val.ToString();
         J2.text = P2val.ToString();
+        P1val =  Mathf.Round(Input.GetAxis("Vertical1") * 100f) / 100f;
+        P2val = Mathf.Round(Input.GetAxis("Vertical2") * 100f) / 100f;
+    
 
         Pad1.transform.position = new Vector3(Pad1.transform.position.x, 5 * P1val, Pad1.transform.position.z);
         Pad2.transform.position = new Vector3(Pad2.transform.position.x, 5 * P2val, Pad2.transform.position.z);
 
-      //  tmp = Input.GetAxisRaw("P1_button1").ToString() + " " + Input.GetAxisRaw("P1_button2").ToString() +" " + Input.GetAxisRaw("P2_button1").ToString() + " " + Input.GetAxisRaw("P2_button2").ToString();
+      //  tmp = Input.GetAxisRaw("B_0").ToString() + " " + Input.GetAxisRaw("B_1").ToString() +" " + Input.GetAxisRaw("B_2").ToString() + " " + Input.GetAxisRaw("B_3").ToString();
         tmp = P1Score.ToString() + "  -   " + P2Score.ToString();
 
-        if (Input.GetAxisRaw("P1_button1") > 0.5f) {
+        if (Input.GetAxisRaw("B_0") > 0.5f) {
             resetAll();
         }
 
-        curstate = (int) Input.GetAxisRaw("P1_button2");
+        curstate = (int) Input.GetAxisRaw("B_1");
         if (curstate ==1 && laststate==0)
         {
             DisEnabWalls = !DisEnabWalls;
@@ -92,9 +100,72 @@ public class TestHid : MonoBehaviour
         }
         butttons.text = tmp;
 
+        int JsButtonval = 9;
 
-        string DebugString = Input.GetAxisRaw("P1_button1").ToString() + " " + Input.GetAxisRaw("P1_button2").ToString() + " " + Input.GetAxisRaw("P2_button1").ToString() + " " + Input.GetAxisRaw("P2_button2").ToString();
+        if (Input.GetAxisRaw("B_0") > 0.5f)
+        {
+            JsButtonval = 0;
+        } else 
+            if (Input.GetAxisRaw("B_1") > 0.5f) 
+        {
+            JsButtonval = 1;
+        }
+        else
+            if (Input.GetAxisRaw("B_2") > 0.5f)
+        {
+            JsButtonval = 2;
+        }
+        else
+            if (Input.GetAxisRaw("B_3") > 0.5f)
+        {
+            JsButtonval = 3;
+        }
+        else
+            if (Input.GetAxisRaw("B_4") > 0.5f)
+        {
+            JsButtonval = 4;
+        }
+        else
+            if (Input.GetAxisRaw("B_5") > 0.5f)
+        {
+            JsButtonval = 5;
+        }
+        else
+            if (Input.GetAxisRaw("B_6") > 0.5f)
+        {
+            JsButtonval = 6;
+        }
+        else
+            if (Input.GetAxisRaw("B_7") > 0.5f)
+        {
+            JsButtonval = 7;
+        }
+
+        if (JsButtonval < 9) {
+
+            if (JsButtonval != temp) {
+
+                DebugBoxList.text += "\n heard JS B_" + JsButtonval;
+            }
+              temp=JsButtonval;
+        }
+
+        string DebugString   = "b." + JsButtonval.ToString() + "  |  " +
+                Input.GetAxisRaw("B_0").ToString() + " " +
+                Input.GetAxisRaw("B_1").ToString() + " " +
+                Input.GetAxisRaw("B_2").ToString() + " " + 
+                Input.GetAxisRaw("B_3").ToString() + " " + 
+                Input.GetAxisRaw("B_4").ToString() + " " + 
+                Input.GetAxisRaw("B_5").ToString() + " " + 
+                Input.GetAxisRaw("B_6").ToString() + " " + 
+                Input.GetAxisRaw("B_7").ToString();
+
+       
+
+
         DebugBox.text = DebugString;
+
+       
         //float current = 0;
         //current = Time.frameCount / Time.time;
         //avgFrameRate = (int)current;

@@ -1,4 +1,4 @@
-﻿#include <math.h>
+﻿//#include <math.h>
 //
 
 //*******************************************************************************************************************
@@ -11,8 +11,25 @@
 void ReadAnalogAndMap(int rangemin, int rangemax) {
     Pad1_PotValue = analogRead(A0);
     Pad2_PotValue = analogRead(A1);
-    Pad1_potCleanVal = map(Pad1_PotValue, 0, 1023, rangemin, rangemax);//   round( sensorValue) / 10;
-    Pad2_potCleanVal = map(Pad2_PotValue, 0, 1023, rangemin, rangemax);
+
+     Pad1_potCleanVal = map(Pad1_PotValue, 0, 1023, rangemin, rangemax);//   round( sensorValue) / 10;
+   Pad2_potCleanVal = map(Pad2_PotValue, 0, 1023, rangemin, rangemax);
+
+   // if (_isAndroid) {
+   //     Pad1_potCleanVal = Pad1_PotValue;//   round( sensorValue) / 10;
+   //     Pad2_potCleanVal = Pad2_PotValue;
+   // }
+   // 
+  
+   // else
+   // {
+   //     Pad1_potCleanVal = map(Pad1_PotValue, 0, 1023, rangemin, rangemax);
+   //     Pad2_potCleanVal = map(Pad2_PotValue, 0, 1023, rangemin, rangemax);
+
+   //// Pad1_potCleanVal = map(Pad1_PotValue, 0, 1023, rangemin, rangemax);//   round( sensorValue) / 10;
+   //// Pad2_potCleanVal = map(Pad2_PotValue, 0, 1023, rangemin, rangemax);
+   // }
+    
 }
 void ReadAnSetButtons() {
 
@@ -22,21 +39,47 @@ void ReadAnSetButtons() {
         if (currentButtonState != lastButtonStates[index])
         {
             //************************************************************
-            Joystick.setButton(index, currentButtonState);
-            // Joystick[0].setButton(index, currentButtonState);
-            // Joystick[1].setButton(index, currentButtonState);
-         //************************************************************
-            lastButtonStates[index] = currentButtonState;
+            if (_isAndroid) {
+                if (index == 0) {
+                    Joystick.setButton(0, currentButtonState);
+                }
+                else
+                    if (index == 1) {
+                        Joystick.setButton(1, currentButtonState);
+                    }
+                    else
+                        if (index == 2) {
+                            Joystick.setButton(3, currentButtonState);
+                        }
+                        else
+                            if (index == 3) {
+                                Joystick.setButton(4, currentButtonState);
+                            }
+            
+            }
+            else
+                Joystick.setButton(index, currentButtonState);
+             //************************************************************
+                lastButtonStates[index] = currentButtonState;          
         }
     }
+    /*for (int index = 0; index < 5; index++)
+    {
+        if (lastButtonStates[index] == 1) { 
+            Joystick.pressButton(index); 
+        }
+        else {
+            Joystick.releaseButton(index);
+        }
+    }*/
+}
 
-    //for (int index = 0; index < 4; index++)
-    //{
-    //    if (lastButtonStates[index] == 1) { Joystick.pressButton(index); }
-    //    else {
-    //        Joystick.releaseButton(index);
-    //    }
-    //}
+void TestSwitch_to_pin(int argpin, int JoyButNum) {
+    int testButtonState = !digitalRead(argpin);
+    if (testButtonState != Last_testButtonState) {
+        Joystick.setButton(JoyButNum, testButtonState);
+        Last_testButtonState = testButtonState;
+    }
 }
 
 void ReadModeButton() {
@@ -48,8 +91,16 @@ void ReadModeButton() {
 
         // toggle state of LED
         MODE_ledState = !MODE_ledState;
-
+      //  _indexOfJsButtonTotest++;
+     //   if (_indexOfJsButtonTotest >= TotalButtons)_indexOfJsButtonTotest = 0;
+      //  Serial.println(_indexOfJsButtonTotest);
         // control LED arccoding to the toggled state
+
+        if (MODE_ledState == HIGH) {
+            _isAndroid = true;
+        }
+        else
+            _isAndroid = false;
         digitalWrite(LED_PIN, MODE_ledState);
     }
 }
@@ -66,28 +117,33 @@ void Do_setup() {
     MODE_currentButtonState = digitalRead(Mode_Pin);
     //************************************************************
     Joystick.begin();
+    delay(10);
     //  Joystick[0].begin();
      // Joystick[1].begin();
      //************************************************************
 }
 
 void Do_loop() {
-    if (MODE_ledState == true) { _min = 0; }
-    else
-        _min = -127;
-    ReadAnalogAndMap(_min, 127);
-    ReadAnSetButtons();
     ReadModeButton();
+    ReadAnSetButtons();
+
+    if (_isAndroid) { _min = 0; _max = 1023; }
+    else {
+        _min =512;
+        _max =1023;
+    }
+  
+    ReadAnalogAndMap(_min, _max);
+ 
+
+   
+   // TestSwitch_to_pin(11,_indexOfJsButtonTotest);
+    
     //************************************************************
     Joystick.setYAxis(Pad1_potCleanVal);
     Joystick.setXAxis(Pad2_potCleanVal);
-
-    //Joystick[0].setYAxis(Pad1_potCleanVal);
-    //Joystick[0].setXAxis(Pad2_potCleanVal);
-    //Joystick[1].setYAxis(Pad1_potCleanVal);
-    //Joystick[1].setXAxis(Pad2_potCleanVal);
     //************************************************************
+  
 
-
-    delay(20);
+    delay(30);
 }
